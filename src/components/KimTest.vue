@@ -1,111 +1,74 @@
 <template>
 
+<!-- 부모 - input, 배열      ->  자식 배열  단일삭제 , 전체 삭제  -->
+
+
 
   <section id="mainSection">
     <div>
-      <img v-show="state.pictureOn" src="@/asset/test.png" style="width : 200px; height 200px;" @click="ageAdd">
-      <button @click="pictureChange">O</button>
-      <button @click="ageAdd">click</button>
-      <button @dblclick	="ageAdd">dblclick</button>
-      <button @mouseover="ageAdd">mouseover</button>
-      <button @mouseout="ageAdd">mouseout</button>
-      <button @mouseup="ageAdd">mouseup</button>
-      <button @keydown="ageAdd">keydown</button>
-      <button @keyup="ageAdd">keyup</button>
-      <button @keypress="ageAdd">keypress</button>
-      <button @change="ageAdd">change</button>
-      <button @click="ageAdd">O</button>
-      <input v-model="state.textName" type="text" @keydown="keyDown" @keyup="keyup"  >
-      <input v-model="state.numberAge" type="text">
-
-      <input v-model="testWatch">
-
-      <button @click="addContent">O</button>
-      <div v-for="(arr, index) in state.Info" :key="index">
-        <h1 v-if="arr.age <= 18" style="color: red">{{ arr.name }} {{ arr.age }}</h1>
-        <h1 v-if="arr.age > 18" style="color: blue">{{ arr.name }} {{ arr.age }}</h1>
-        <button @click="deleteContent(index)">X</button>
-      </div>
-
+     <button @click="plusInfo()">+</button>
+      <input v-model="state.inputColor" />
+      <button @click="minusInfo()">-</button>
+      <input v-model="inputNumber" type="text" maxlength="11">
+      <button @click="deleteContent">버튼</button>
     </div>
-
-
   </section>
-
 </template>
-
-
-
 <script>
-import {watch, ref, reactive,onBeforeMount, onMounted, onUnmounted} from 'vue';
-
+import {reactive,ref } from 'vue';
 
   export default {
-    props : {
-      msg : String,
-      logo : String,
-    },
-    setup() {
-      let testWatch = ref('');
+    props : 
+      [ 'namee','agee', "info"]
+    ,
+    watch :{
+      inputNumber(){
 
-
-      watch(testWatch, ()=>{
-        if(testWatch.value.match(/(\d|[!@#])+/)){
-          testWatch.value = '';
+      let check = /^[0-9]+$/;
+      if (!check.test(this.inputNumber)) {
+          alert("숫자만");
+          return this.inputNumber = this.inputNumber.replace(/[^0-9]/g, '');
         }
-      })
-
-
-      onBeforeMount(()=>{
-        //이벤트 등록 
-        console.log("onBeforeMount");
-      })
-
-      onMounted(()=>{
-        console.log("onMounted");
-        state.age+=3;
-      })
-
-      onUnmounted(()=>{
-        console.log("unmounted");
-        //이벤트 해제 
-      })
+      }
+    },
+    setup(props, {emit}) {
 
       const state = reactive({
-        pictureOn : true,
-        Info:[
-          {name:"김상범", age:18},
-          {name:"김상범2", age:20},
-          {name:"김상범3", age:30}
-        ],
-        age : 1,
-        textName : '',
-        numberAge : ''
+        
+        info : props.info,
       })
-      const addContent = () =>{
-        state.Info.push({name : state.textName, age : state.numberAge });
-      }
 
-      const pictureChange = () => {
-        state.pictureOn = ! state.pictureOn;
+      const inputNumber = ref('');
+
+      const plusInfo = () =>{
+        console.log(props.namee);
+        console.log(props.agee);
+        state.info.push({userName : props.namee, userAge : props.agee})
+
+ 
+      }
+      const minusInfo = () =>{
+        emit("colorText", state.inputColor);
+      }
+      const emitTest = () => {
+        console.log(state.inputColor);
+
+        emit("colorText", state.inputColor);
+
       }
       const deleteContent = (index) =>{
-       state.Info.splice(index, 1);
+        index;
+        console.log(inputNumber.value);
+        index = inputNumber.value - 1;
+        state.info.splice(index, 1)
       }
-
-      const ageAdd = () => {
-        console.log(state.age);
-        state.age++;
-      }
-
-      
       return {
-        testWatch,
         state,
-        pictureChange,
+        plusInfo,
+        minusInfo,
+        emitTest,
         deleteContent,
-        addContent,
-        ageAdd
+        inputNumber
       }    
     },
 
