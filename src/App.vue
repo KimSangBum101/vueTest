@@ -2,8 +2,10 @@
   <img alt="Vue logo" src="./assets/logo.png">
 
   <!-- <HelloWorld id="mainSection" msg="dkdkdk" logo="삼성ds"/> -->
-  <KimTest ></KimTest>
-
+  <KimTest></KimTest>
+  <div>
+    <router-view></router-view> 
+  </div>
 
 </template>
 

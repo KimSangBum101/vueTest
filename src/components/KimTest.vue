@@ -74,9 +74,9 @@ import {watch, ref, reactive,onBeforeMount, onMounted, onUnmounted} from 'vue';
       const state = reactive({
         pictureOn : true,
         Info:[
-          {name:"김상범", age:18},
-          {name:"김상범2", age:20},
-          {name:"김상범3", age:30}
+          {name:"김상범", age:36},
+          {name:"김상범2", age:8},
+          {name:"김상범3", age:212}
         ],
         age : 1,
         textName : '',
